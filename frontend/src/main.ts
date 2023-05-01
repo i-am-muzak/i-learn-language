@@ -13,8 +13,7 @@ import { createApp } from 'vue'
 // Plugins
 import { registerPlugins } from '@/plugins'
 
-// Styles
-import '@/assets/style/tailwind.css';
+import '@/assets/style/global.scss';
 
 const app = createApp(App)
 
