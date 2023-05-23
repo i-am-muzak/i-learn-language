@@ -1,28 +1,24 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './modules/user/user.module';
-import { LevelModule } from './modules/level/level.module';
 import { ConfigModule } from '@nestjs/config';
-import { RelUserLevelModule } from './modules/rel_user_level/rel_user_level.module';
 import { LanguageModule } from './modules/language/language.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { WordModule } from './modules/word/word.module';
+import { DatabaseModule } from './database/database.module';
+import { UserWordsModule } from './modules/user_words/user_words.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(
-      {
-        isGlobal: true
-      }
-    ),
-    MongooseModule.forRoot('mongodb://localhost:27017/dev', {autoIndex: true}),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    DatabaseModule,
     UserModule,
-    LevelModule,
-    RelUserLevelModule,
     LanguageModule,
-    AuthModule
+    AuthModule,
+    WordModule,
+    UserWordsModule,
   ],
   controllers: [],
 })
-
-
 export class AppModule {}

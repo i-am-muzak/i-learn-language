@@ -1,7 +1,0 @@
-$font-family: "Public Sans", sans-serif;
-
-
-@use 'vuetify/settings' with (
-  $font-size-root: 14px,
-  $body-font-family: $font-family
-);

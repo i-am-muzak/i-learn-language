@@ -3,14 +3,12 @@ import { UserService } from '../service/user.service';
 import { User } from '../entity/user.entity';
 import { JwtAuthGuard } from '../../../modules/auth/service/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
-  constructor(
-    private readonly userService: UserService
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
-  @Get("all")
+  @Get('all')
   fetchAllUsers(@Request() req): Promise<User[]> {
     // console.log(req.user)
     return this.userService.findAll();
