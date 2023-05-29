@@ -1,10 +1,10 @@
 <template>
   <div class="sidebar-section">
     <div class="flex items-center flex-col h-full justify-between">
-      <div>
-        <div class="sidebar-item w-full flex items-center flex-col">
+      <div class="w-full">
+        <div class="sidebar-item w-full flex items-center flex-col w-full">
           <div class="p-2">
-            <div class="flex items-center justify-center sidebar-icon">
+            <div class="flex items-center justify-center sidebar-icon w-full">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon icon-tabler icon-tabler-moon-stars"
@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div class="h-full flex flex-col items-center justify-center">
+      <div class="h-full flex flex-col items-center justify-center w-full">
         <nuxt-link
           v-for="(item, index) in sidebarItems"
           :to="item.to"
@@ -99,19 +99,6 @@ export default {
           to: "/",
         },
         {
-          text: "Tasks",
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M13 5h8"></path>
-            <path d="M13 9h5"></path>
-            <path d="M13 15h8"></path>
-            <path d="M13 19h5"></path>
-            <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-            <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-            </svg>`,
-          to: "/tasks",
-        },
-        {
           text: "Grammar",
           icon: `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-books" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -165,18 +152,51 @@ export default {
   left: 0;
   top: 0;
   height: 100%;
-  background-color: #180600;
-  color: #846e69;
+  background-color: #ffffff;
+  color: #b6b6b6;
+  border-bottom-right-radius: 9px;
+  border-top-right-radius: 9px;
 
+  a {
+    color: #b6b6b6;
+  }
   .sidebar-item {
     &:hover {
-      color: #ffffff;
+      color: #57a6f1;
       cursor: pointer;
     }
   }
+  .nuxt-link-exact-active {
+    color: #57a6f1;
+    position: relative;
 
+    &::after {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background-color: #57a6f1;
+      content: "";
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+  }
   .nuxt-link-active {
-    color: #ffffff;
+    color: #57a6f1;
+    position: relative;
+
+    &::after {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background-color: #57a6f1;
+      content: "";
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
   }
 }
 </style>
