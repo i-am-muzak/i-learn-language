@@ -30,7 +30,7 @@ export class WordController {
   @Get('random')
   @UseInterceptors(WordSerializer)
   async getRandomWords(): Promise<Word[]> {
-    const words = await this.wordService.getRandomWords(10);
+    const words = await this.wordService.getRandomWords(5);
 
     return words;
   }

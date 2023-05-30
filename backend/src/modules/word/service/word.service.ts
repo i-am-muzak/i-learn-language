@@ -1,12 +1,20 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Word, WordDocument } from '../entity/word.entity';
+import {
+  UserWords,
+  UserWordsDocument,
+} from '../../user_words/entity/user_words.entity';
 import { Model } from 'mongoose';
 import { CreateWordsDto } from '../dto/word.dto';
 
 @Injectable()
 export class WordService {
-  constructor(@InjectModel(Word.name) private wordModel: Model<WordDocument>) {}
+  constructor(
+    @InjectModel(Word.name) private wordModel: Model<WordDocument>,
+    @InjectModel(UserWords.name)
+    private userWordsModel: Model<UserWordsDocument>,
+  ) {}
 
   async create(createWordsDto: CreateWordsDto) {
     try {
@@ -35,12 +43,31 @@ export class WordService {
   }
 
   async getRandomWords(size: number): Promise<Word[]> {
+    const userWords = await this.userWordsModel
+      .find({
+        user_id: '6475132b6f584d01cc1d49fe',
+      })
+      .exec();
+    const wordIds = [];
+    userWords.forEach((userWord) => {
+      wordIds.push(userWord.word_id);
+    });
+
     return await this.wordModel.aggregate([
       {
         $sample: {
           size: size,
         },
       },
+      {
+        $match: { _id: { $not: { $in: wordIds } } },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          document: { $push: "$$ROOT" }
+        }
+      }
     ]);
   }
 }

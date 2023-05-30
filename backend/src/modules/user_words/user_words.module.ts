@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ControllerController } from './controller/user_words.controller';
-import { ServiceService } from './service/user_words.service';
+import { UserWordService } from './service/user_words.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserWords, UserWordsEntity } from './entity/user_words.entity';
 
@@ -11,6 +11,6 @@ import { UserWords, UserWordsEntity } from './entity/user_words.entity';
     ]),
   ],
   controllers: [ControllerController],
-  providers: [ServiceService],
+  providers: [UserWordService],
 })
 export class UserWordsModule {}
