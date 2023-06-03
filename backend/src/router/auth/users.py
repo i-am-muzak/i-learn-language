@@ -52,7 +52,7 @@ def register(createUser: CreateUserIn, db: Session = Depends(get_db)):
         "created_at": int(time.time())
     })
 
-    token = create_access_token(sub=createUser.id)
+    token = create_access_token(sub=user.id)
 
     return {
         "access_token": token,

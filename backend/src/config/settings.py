@@ -8,5 +8,8 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str
     JWT_SECRET: str
 
+    # Keys
+    OPEN_AI_ACCESS_TOKEN: str
+
     class Config:
         env_file = ".env"

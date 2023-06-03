@@ -1,4 +1,9 @@
 from pydantic import BaseModel
+from typing import List
+
+
+class CreateWord(BaseModel):
+    words: List[str]
 
 
 class WordView(BaseModel):
