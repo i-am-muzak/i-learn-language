@@ -9,19 +9,19 @@
         >
       </div>
       <div class="mt-2 text-[13px] text-gray-500">
-        {{ task.reminder }}
+        {{ task.description }}
       </div>
       <div class="mt-3 flex items-center justify-between">
         <div>
           <span
-            v-for="(word, wordIndex) in task.words"
+            v-for="(item, wordIndex) in task.words"
             :key="wordIndex"
             class="text-rose-500 bg-rose-50 d-inline-block px-2 py-1 rounded mr-1 text-[11px] hover:bg-rose-100"
           >
-            {{ word }}
+            {{ item.word }}
           </span>
         </div>
-        <span class="text-[11px] text-gray-400"> 26.05.2023 </span>
+        <span class="text-[11px] text-gray-400"> {{ $unixToDate(task.created_at) }} </span>
       </div>
     </div>
   </div>

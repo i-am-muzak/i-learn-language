@@ -9,14 +9,24 @@
           >
         </div>
         <div class="mt-4">
-          <nuxt-link
-            v-for="(task, index) in tasks"
-            :key="index"
-            class="bg-white p-4 rounded mb-2 hover:shadow-lg block"
-            :to="{ name: 'task_id', params: { task_id: task.id } }"
-          >
-            <Task :task="task" />
-          </nuxt-link>
+          <div v-if="!tasks_loading">
+            <nuxt-link
+              v-for="(task, index) in tasks"
+              :key="index"
+              class="bg-white p-4 rounded mb-2 hover:shadow-lg block"
+              :to="{ name: 'task_id', params: { task_id: task.id } }"
+            >
+              <Task :task="task" />
+            </nuxt-link>
+          </div>
+          <div v-else>
+            <div class="bg-white p-4 rounded hover:shadow-lg">
+              <a-skeleton active  :paragraph="{ rows: 3 }" />
+            </div>
+            <div class="mt-3 bg-white p-4 rounded hover:shadow-lg">
+                <a-skeleton active  :paragraph="{ rows: 4 }" />
+              </div>
+          </div>
         </div>
       </div>
       <div class="w-4/12 pl-4">
@@ -96,38 +106,7 @@ export default {
     return {
       loadingTask: false,
       days: ["M", "T", "W", "T", "F", "S", "S"],
-      tasks: [
-        {
-          title: "Task - 1",
-          date: "24-05-2023",
-          status: 0,
-          status_text: "Not Started",
-          reminder:
-            "Rise above the distractions and dedicate yourself to excellence—your scores will be a testament to your unwavering focus.",
-          words: ["world", "sun", "pluton", "neptune", "opponent"],
-          id: "task-1",
-        },
-        {
-          title: "Task - 2",
-          date: "24-05-2023",
-          status: 1,
-          status_text: "Ongoing",
-          reminder:
-            "Success is not a destination but a journey—stay focused, work hard, and let your scores be a reflection of your determination.",
-          words: ["come", "prove", "cry", "citizen", "hope"],
-          id: "task-2",
-        },
-        {
-          title: "Task - 3",
-          date: "24-05-2023",
-          status: 0,
-          status_text: "Not Started",
-          reminder:
-            "Every question is an opportunity to showcase your knowledge and skills—let your scores be a reflection of your brilliance.",
-          words: ["make", "go away", "balloon", "helium", "earphones"],
-          id: "task-3",
-        },
-      ],
+      tasks: [],
       series: [
         {
           name: "Desktops",
@@ -195,12 +174,27 @@ export default {
           },
         },
       },
+      tasks_loading: false
     };
   },
   methods: {
     createTask() {
       this.loadingTask = true;
     },
+    async fetchTasks() {
+      try {
+        this.tasks_loading = true;
+        const response = await this.$axios.$get("/api/user-tasks/all");
+        this.tasks = response;
+      } catch (error) {
+        throw new Error(error);
+      } finally {
+        this.tasks_loading = false;
+      }
+    },
+  },
+  mounted() {
+    this.fetchTasks();
   },
   components: {
     Task,
