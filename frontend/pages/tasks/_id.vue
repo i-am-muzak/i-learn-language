@@ -202,6 +202,7 @@ export default {
           level: "beginner",
         },
       ],
+      task_loading: false
     };
   },
   methods: {
@@ -215,6 +216,20 @@ export default {
       }
       return false;
     },
+    async fetchTaskData() {
+      try {
+        this.task_loading = true;
+        const response = await this.$axios.$get(`user-tasks/${this.$route.params.id}`)
+        console.log(response)
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.task_loading = false;
+      }
+    }
+  },
+  mounted () {
+    this.fetchTaskData();
   },
 };
 </script>

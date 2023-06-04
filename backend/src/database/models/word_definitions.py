@@ -12,4 +12,5 @@ class WordDefinition(Base):
     definition = Column(String)
     part_of_speech = Column(String)
 
-    word = relationship("Word", backref="word_definitions")
+    word = relationship(
+        "Word", back_populates="word_definitions", viewonly=True)

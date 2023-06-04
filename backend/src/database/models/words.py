@@ -15,4 +15,10 @@ class Word(Base):
     us_audio = Column(String)
 
     user_tasks = relationship(
-        'UserTask', secondary='rel_user_tasks_words', back_populates='words')
+        'UserTask', secondary='rel_user_tasks_words', back_populates='words', viewonly=True)
+
+    word_sentences = relationship(
+        "WordSentence", back_populates="word", viewonly=True)
+
+    word_definitions = relationship(
+        "WordDefinition", back_populates="word", viewonly=True)

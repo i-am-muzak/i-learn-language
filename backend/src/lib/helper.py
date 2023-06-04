@@ -8,3 +8,7 @@ def check_email_provider(email: str) -> bool:
         return True
 
     return False
+
+
+def spacesToDash(text: str):
+    return text.replace(" ", "-")

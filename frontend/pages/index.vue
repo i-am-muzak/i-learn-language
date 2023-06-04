@@ -14,18 +14,18 @@
               v-for="(task, index) in tasks"
               :key="index"
               class="bg-white p-4 rounded mb-2 hover:shadow-lg block"
-              :to="{ name: 'task_id', params: { task_id: task.id } }"
+              :to="{ name: 'tasks-id', params: { id: task.id } }"
             >
               <Task :task="task" />
             </nuxt-link>
           </div>
           <div v-else>
             <div class="bg-white p-4 rounded hover:shadow-lg">
-              <a-skeleton active  :paragraph="{ rows: 3 }" />
+              <a-skeleton active :paragraph="{ rows: 3 }" />
             </div>
             <div class="mt-3 bg-white p-4 rounded hover:shadow-lg">
-                <a-skeleton active  :paragraph="{ rows: 4 }" />
-              </div>
+              <a-skeleton active :paragraph="{ rows: 4 }" />
+            </div>
           </div>
         </div>
       </div>
@@ -174,17 +174,20 @@ export default {
           },
         },
       },
-      tasks_loading: false
+      tasks_loading: false,
     };
   },
   methods: {
+    loadMore() {
+      console.log("helloooo");
+    },
     createTask() {
       this.loadingTask = true;
     },
     async fetchTasks() {
       try {
         this.tasks_loading = true;
-        const response = await this.$axios.$get("/api/user-tasks/all");
+        const response = await this.$axios.$get("user-tasks/all");
         this.tasks = response;
       } catch (error) {
         throw new Error(error);

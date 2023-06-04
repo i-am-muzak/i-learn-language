@@ -36,9 +36,26 @@ router = APIRouter(prefix="/user-tasks", tags=["user-tasks"])
 settings = Settings()
 
 
+@router.get("/{id}", response_model=UserTaskView, description="Fetch task detail and create sentences & audios.")
+def fetchTasks(id: int, db: Session = Depends(get_db), user=Depends(get_current_user)):
+    task = db.query(UserTask).filter(UserTask.user_id ==
+                                     user["sub"]).filter(UserTask.id == id).first()
+
+    if not task:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="There is no such task.")
+
+    return task
+
+
 @router.get("/all", response_model=List[UserTaskView], description="Fetch all tasks of authenticated user from database.")
 def fetchTasks(db: Session = Depends(get_db), user=Depends(get_current_user)):
-    tasks = db.query(UserTask).filter(UserTask.user_id == user["sub"]).all()
+    tasks = db.query(UserTask) \
+        .filter(UserTask.user_id == user["sub"]) \
+        .order_by(UserTask.id.desc()) \
+        .limit(5) \
+        .all()
+
     return tasks
 
 
@@ -83,26 +100,8 @@ def createTask(db: Session = Depends(get_db), user=Depends(get_current_user)):
         raise HTTPException(
             status_code=400, detail="An error occured between API's.")
 
-    # Check choices from Open AI's Response. Details: https://platform.openai.com/docs/api-reference/chat/create
-    choices = resp["choices"] if "choices" in resp else []
-
-    if not len(choices):
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            detail="An error occured while fetching choices from Open AI response. Try again later.")
-
     try:
-        # Get the description we've created.
-        task_description = choices[0]["message"]["content"]
-        task_description = json.loads(task_description)
-
-        # We told ChatGPT to create response in spesific JSON format. However, we can still check the generated response for avoiding any errors.
-        if not "sentence" in task_description:
-            logger.error(
-                f"There is no sentence key in the generated response. Open AI Request ID: {resp['id']}")
-            raise HTTPException(
-                status_code=400, detail="An error occured while creating description for task. Try again later!")
-
-        task_description = task_description["sentence"]
+        task_description = resp["sentence"]
 
         # Get User's Task Count.
         count = db.query(UserTask).filter(

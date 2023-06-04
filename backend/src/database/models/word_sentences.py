@@ -12,4 +12,4 @@ class WordSentence(Base):
     sentence = Column(String)
     part_of_speech = Column(String)
 
-    word = relationship("Word", backref="word_sentences")
+    word = relationship("Word", back_populates="word_sentences", viewonly=True)

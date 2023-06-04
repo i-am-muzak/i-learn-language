@@ -10,6 +10,7 @@ class Settings(BaseSettings):
 
     # Keys
     OPEN_AI_ACCESS_TOKEN: str
+    GCP_PROJECT_ID: str
 
     class Config:
         env_file = ".env"
